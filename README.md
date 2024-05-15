@@ -24,9 +24,9 @@ Ví dụ: xem xét vị trí bàn xuất phát và nước đi: `Nf3`. Việc đ
 Trong số tất cả các nước đi hợp lệ, tích lớn nhất là nước đi được lựa chọn.
 
 Mạng lưới thần kinh bao gồm sáu lớp tích chập, tiếp theo là hai lớp affine và một lớp đầu ra. Một bản phác thảo chi tiết hơn về kiến trúc có thể được tìm thấy dưới đây:
+
 Model: "model"
-'''
-__________________________________________________________________________________________________
+```__________________________________________________________________________________________________
  Layer (type)                   Output Shape         Param #     Connected to                     
 ==================================================================================================
  input_1 (InputLayer)           [(None, 8, 8, 12)]   0           []                               
