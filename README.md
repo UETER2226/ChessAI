@@ -25,6 +25,7 @@ Trong số tất cả các nước đi hợp lệ, tích lớn nhất là nướ
 
 Mạng lưới thần kinh bao gồm sáu lớp tích chập, tiếp theo là hai lớp affine và một lớp đầu ra. Một bản phác thảo chi tiết hơn về kiến trúc có thể được tìm thấy dưới đây:
 Model: "model"
+'''
 __________________________________________________________________________________________________
  Layer (type)                   Output Shape         Param #     Connected to                     
 ==================================================================================================
