@@ -1,59 +1,29 @@
-# chess-ai
+# ChessAI
 
-I've been playing chess for a very long time, and ever since I started CS, I've always wanted to create a chess bot. I've finally done it 🙃.
-
-Here's a video where I (white) get crushed by my bot (black) 😉.
-
-https://user-images.githubusercontent.com/64169932/152080181-d7370b95-b44e-4d91-aa54-a69f4d3d5795.mov
-
-Here's its chess.com profile: https://www.chess.com/member/chessables_with_chat_gpt.
-
-## Playing against the AI! (Mac OS)
-1. Run `git clone https://github.com/samliu21/chess-ai`. Navigate into the directory with `cd chess-ai`.
-2. Create a virtual environment using `python -m venv .` and activate it with `source bin/activate`.
-3. Install the necessary dependencies using `python -m pip install -r requirements.txt`.
-4. Navigate to the correct directory using `cd gui` and call `python main.py` to play!
-
+## Cách chạy
+1. Cài đặt các thư viện cần thiết `python -m pip install -r requirements.txt`.
+2. Chạy file main.py để chơi
+3. 
 ## Data 
-I used the official Lichess <a href="https://database.lichess.org">database</a>, which contained games in a standard PGN format. Here is the data cleaning process:
-
-1. Download the raw PGN data file from <a href="https://database.lichess.org">Lichess</a>.
-2. Download the `pgn-extract` module <a href="https://www.cs.kent.ac.uk/people/staff/djb/pgn-extract/">here</a>.
-3. Run `pgn-extract --quiet -D --fencomments --fixresulttags -w 100000 -o output.pgn master_db.pgn`. This adds a FEN comment after each move and reduces each game to a single line. 
-4. Run `extract_fen.py` to extract the FEN comments. 
-5. `get_moves.py` determines the square that was moved out of and the square that was moved into for each move. 
-
-- Use `pgn-extract` to add FENs after each move
-- Use a python script to extract the FENs
-- Compare adjacent FENs to determine the played move in the current board position
-- Extract the square that was moved out of and the square that was moved into
-
-For more information, look at the `data_cleaning` folder.
-
-## Failed Attempt
-Initially, I tried to create a board evaluation neural network to pair with a minimax algorithm. There were two issues with this approach:
-
-1. The evaluation network didn't perform to my expectations. It could detect material imbalances but couldn't detect simple checkmates.
-
-2. Due to the large action space in chess, the minimax algorithm is very slow, even when optimzied with alpha-beta pruning.
-
-Together, these factors prompted me to scrap this initial idea and try another.
+1. Tôi sử dụng bộ dữ liệu từ Lichess, nơi chứa các trò chơi ở định dạng PGN tiêu chuẩn :<a href="https://database.lichess.org">
+2. Quá trình xử lý dữ liệu
+   - Tải xuống tệp dữ liệu PGN thô từ <a href="https://database.lichess.org">Lichess</a>.
+   - Tải xuống mô-đun `pgn-extract` <a href="https://www.cs.kent.ac.uk/people/staff/djb/pgn-extract/">tại đây</a>.
+   - Chạy `pgn-extract --quiet -D --fencomments --fixresulttags -w 100000 -o out.pgn master_db.pgn`. Điều này thêm một FEN sau mỗi lần di chuyển và gói gọn mỗi trò chơi trong một dòng duy nhất.
+   - Chạy `extract_fen.py` để trích xuất các nhận xét FEN.
+   - `get_moves.py` xác định những ô cờ mà quân cờ di chuyển từ đó và và những ô cờ mà quân cờ di chuyển tới cho mỗi lần di chuyển.
+  Xem chi tiết tại thư mục `data_cleaning`
 
 ## GUI
-The GUI was hand-made using the `pygame` and `python-chess` modules.
+GUI được tạo thủ công bằng cách sử dụng `pygame` và` python-chess`.
 
 ## Model
-This architecture was largely inspired by this <a href="http://cs231n.stanford.edu/reports/2015/pdfs/ConvChess.pdf">Standford paper</a>.
+AI sử dụng hai mô hình. Cả hai đều nhận được một vị trí trên bảng làm đầu vào và đầu ra là một ma trận `8x8` có xác suất softmax. "from model" dự đoán ô cờ mà quân cờ sẽ bắt đầu di chuyển và "to model" dự đoán ô cờ mà quân cờ sẽ di chuyển đến.
 
-The AI uses two models. They both receive a board position as input and output an `8x8` matrix of softmax probabilities. The "from model" predicts the square to be moved out of and the "to model" predicts the square to be moved into.
+Ví dụ: xem xét vị trí bàn xuất phát và nước đi: `Nf3`. Việc đánh giá bước di chuyển này là tích của giá trị tại bình phương `g1` của "from model" và giá trị tại bình phương `f3` của "to model".
+Trong số tất cả các nước đi hợp lệ, tích lớn nhất là nước đi được lựa chọn.
 
-This approach is best illustrated with an example. Consider the starting board position and the move: `Nf3`. The evaluation of this move is the product of the value at the `g1` square of the from model and the value at the `f3` square of the to model.
-
-Among all legal moves, the largest product is the selected move. 
-
-The neural networks consist of six convolutional layers, followed by two affine layers and an output layer. A more detailed sketch of the architecture can be found below:
-
-```
+Mạng lưới thần kinh bao gồm sáu lớp tích chập, tiếp theo là hai lớp affine và một lớp đầu ra. Một bản phác thảo chi tiết hơn về kiến trúc có thể được tìm thấy dưới đây:
 Model: "model"
 __________________________________________________________________________________________________
  Layer (type)                   Output Shape         Param #     Connected to                     
