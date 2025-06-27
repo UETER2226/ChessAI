@@ -1,5 +1,6 @@
 # ChessAI
-
+## Demo
+https://drive.google.com/file/d/1ZntYsVUNOi4YQcigd8rYHEbpYhuhJ3Uh/view?usp=sharing
 ## Cách chạy
 1. Cài đặt các thư viện cần thiết `python -m pip install -r requirements.txt`.
 2. Chạy file main.py để chơi
