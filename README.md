@@ -4,7 +4,7 @@
 ## Cách chạy
 1. Cài đặt các thư viện cần thiết `python -m pip install -r requirements.txt`.
 2. Chạy file main.py để chơi
-3. 
+
 ## Data 
 1. Tôi sử dụng bộ dữ liệu từ Lichess, nơi chứa các trò chơi ở định dạng PGN tiêu chuẩn :<a href="https://database.lichess.org">
 2. Quá trình xử lý dữ liệu
